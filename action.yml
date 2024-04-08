@@ -142,33 +142,37 @@ runs:
         git commit -m "Optimize images by imgcmp action"
         git push
 
-        sha=$(git rev-parse --short HEAD)
-        new_branch="actions/imgcmp/${sha}"
+        # sha=$(git rev-parse --short HEAD)
+        # new_branch="actions/imgcmp/${sha}"
 
-        echo "sha=${sha}" >> $GITHUB_OUTPUT
-        echo "new_branch=${new_branch}" >> $GITHUB_OUTPUT
+        # echo "sha=${sha}" >> $GITHUB_OUTPUT
+        # echo "new_branch=${new_branch}" >> $GITHUB_OUTPUT
       id: commit
-    - name: Create a pull request
-      if: steps.check.outputs.run == 'true' && steps.template.outputs.message != ''
-      uses: peter-evans/create-pull-request@v3.14.0
+    - name: Create commit comment
+      uses: peter-evans/commit-comment@v3
       with:
-        token: ${{ inputs.token }}
-        committer: GitHub <noreply@github.com>
-        author: ${{ github.actor }} <${{ github.actor }}@users.noreply.github.com>
-        branch: ${{ steps.commit.outputs.new_branch }}
-        base: ${{ steps.branch-name.outputs.current_branch }}
-        title: ${{ steps.template.outputs.title }}
         body: ${{ steps.template.outputs.message }}
-        draft: false
-        delete-branch: true
-    - name: Set outputs
-      if: steps.check.outputs.run == 'true' && steps.template.outputs.message != ''
-      shell: bash
-      id: set-outputs
-      run: |
-        echo "pull-request-number=$PULL_REQUEST_NUMBER" >> $GITHUB_OUTPUT
-    - name: Check outputs
-      if: steps.check.outputs.run == 'true' && steps.template.outputs.message != ''
-      shell: bash
-      run: |
-        echo "pull-request-number: ${{ steps.set-outputs.outputs.pull-request-number }}"
+    # - name: Create a pull request
+    #   if: steps.check.outputs.run == 'true' && steps.template.outputs.message != ''
+    #   uses: peter-evans/create-pull-request@v3.14.0
+    #   with:
+    #     token: ${{ inputs.token }}
+    #     committer: GitHub <noreply@github.com>
+    #     author: ${{ github.actor }} <${{ github.actor }}@users.noreply.github.com>
+    #     branch: ${{ steps.commit.outputs.new_branch }}
+    #     base: ${{ steps.branch-name.outputs.current_branch }}
+    #     title: ${{ steps.template.outputs.title }}
+    #     body: ${{ steps.template.outputs.message }}
+    #     draft: false
+    #     delete-branch: true
+    # - name: Set outputs
+    #   if: steps.check.outputs.run == 'true' && steps.template.outputs.message != ''
+    #   shell: bash
+    #   id: set-outputs
+    #   run: |
+    #     echo "pull-request-number=$PULL_REQUEST_NUMBER" >> $GITHUB_OUTPUT
+    # - name: Check outputs
+    #   if: steps.check.outputs.run == 'true' && steps.template.outputs.message != ''
+    #   shell: bash
+    #   run: |
+    #     echo "pull-request-number: ${{ steps.set-outputs.outputs.pull-request-number }}"
