@@ -152,6 +152,7 @@ runs:
       uses: peter-evans/commit-comment@v3
       with:
         body: ${{ steps.template.outputs.message }}
+        sha: ${{ github.event_name != 'pull_request' && github.event.pull_request.head.sha || github.sha }}
     # - name: Create a pull request
     #   if: steps.check.outputs.run == 'true' && steps.template.outputs.message != ''
     #   uses: peter-evans/create-pull-request@v3.14.0
