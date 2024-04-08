@@ -158,5 +158,4 @@ runs:
       if: ${{ github.event_name == 'pull_request'}}
       uses: thollander/actions-comment-pull-request@v2
       with:
-        message: |
-            Hello world ! :wave:
+        message: ${{ steps.template.outputs.message }}
