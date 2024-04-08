@@ -140,6 +140,7 @@ runs:
         git config --local user.email "noreply@github.com"
         git add .
         git commit -m "Optimize images by imgcmp action"
+        git push
 
         sha=$(git rev-parse --short HEAD)
         new_branch="actions/imgcmp/${sha}"
