@@ -149,31 +149,14 @@ runs:
         # echo "new_branch=${new_branch}" >> $GITHUB_OUTPUT
       id: commit
     - name: Create commit comment
+      if: ${{ github.event_name != 'pull_request'}}
       uses: peter-evans/commit-comment@v3
       with:
         body: ${{ steps.template.outputs.message }}
-        sha: ${{ github.event_name != 'pull_request' && github.event.pull_request.head.sha || github.sha }}
-    # - name: Create a pull request
-    #   if: steps.check.outputs.run == 'true' && steps.template.outputs.message != ''
-    #   uses: peter-evans/create-pull-request@v3.14.0
-    #   with:
-    #     token: ${{ inputs.token }}
-    #     committer: GitHub <noreply@github.com>
-    #     author: ${{ github.actor }} <${{ github.actor }}@users.noreply.github.com>
-    #     branch: ${{ steps.commit.outputs.new_branch }}
-    #     base: ${{ steps.branch-name.outputs.current_branch }}
-    #     title: ${{ steps.template.outputs.title }}
-    #     body: ${{ steps.template.outputs.message }}
-    #     draft: false
-    #     delete-branch: true
-    # - name: Set outputs
-    #   if: steps.check.outputs.run == 'true' && steps.template.outputs.message != ''
-    #   shell: bash
-    #   id: set-outputs
-    #   run: |
-    #     echo "pull-request-number=$PULL_REQUEST_NUMBER" >> $GITHUB_OUTPUT
-    # - name: Check outputs
-    #   if: steps.check.outputs.run == 'true' && steps.template.outputs.message != ''
-    #   shell: bash
-    #   run: |
-    #     echo "pull-request-number: ${{ steps.set-outputs.outputs.pull-request-number }}"
+
+    - name: Comment PR
+      if: ${{ github.event_name == 'pull_request'}}
+      uses: thollander/actions-comment-pull-request@v2
+      with:
+        message: |
+            Hello world ! :wave:
