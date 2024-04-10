@@ -12,10 +12,7 @@ inputs:
     description: "A regular expression for images' paths you don't want to compress."
     required: false
     default: ""
-outputs:
-  pull-request-number:
-    description: "A pull request number created by imgcmp."
-    value: ${{ steps.set-outputs.outputs.pull-request-number }}
+
 runs:
   using: "composite"
   steps:
