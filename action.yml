@@ -149,13 +149,13 @@ runs:
         # echo "new_branch=${new_branch}" >> $GITHUB_OUTPUT
       id: commit
     - name: Create commit comment
-      if: ${{ github.event_name != 'pull_request'}}
+      if: github.event_name != 'pull_request' && steps.check.outputs.run == 'true' && steps.template.outputs.message != ''
       uses: peter-evans/commit-comment@v3
       with:
         body: ${{ steps.template.outputs.message }}
 
     - name: Comment PR
-      if: ${{ github.event_name == 'pull_request'}}
+      if: github.event_name == 'pull_request' && steps.check.outputs.run == 'true' && steps.template.outputs.message != ''
       uses: thollander/actions-comment-pull-request@v2
       with:
         message: ${{ steps.template.outputs.message }}
